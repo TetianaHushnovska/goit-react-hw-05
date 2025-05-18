@@ -1,0 +1,32 @@
+.block{
+    width: 100%;
+    padding-right: 150px;
+    padding-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    border-bottom: 1px solid gray;
+}
+
+.list{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding: 0;
+}
+
+.goBack{
+    border: 1px solid gray;
+padding: 5px 10px;
+display: block;
+max-width: 110px;
+border-radius: 8px;
+margin-bottom: 10px;
+background-color: rgb(246, 246, 246);
+}
+
+.detailsBlock{
+    padding-bottom: 15px;
+    border-bottom: 1px solid gray;
+}

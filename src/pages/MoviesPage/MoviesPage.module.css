@@ -1,0 +1,13 @@
+.input{
+    width: 500px;
+    height: 40px;
+    margin-right: 25px;
+    border-radius: 8px;
+    outline: hidden;
+    border: 1px solid grey;
+    padding: 0 10px;
+}
+
+.btn{
+    border: 1px solid gray;
+}
