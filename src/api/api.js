@@ -52,17 +52,6 @@ export const fetchMovieCredits = async (movieId) => {
     return fetchMovie;
 }
 
-export const fetchMovieImg = async () => {
-    const fetchImgMovie = axios.get('/configuration', {
-        headers: {
-            accept: 'application/json',
-            Authorization:`Bearer ${API_KEY}`
-        }
-    })
-
-    return fetchImgMovie;
-}
-
 export const fetchMovieReviews = async (movieId) => {
     const fetchImgMovie = axios.get(`/movie/${movieId}?append_to_response=reviews`, {
         headers: {

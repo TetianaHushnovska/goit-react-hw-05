@@ -1,5 +1,5 @@
 import "./App.css";
-import { NavLink, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
 const MoviesPage = lazy(() => import("./pages/MoviesPage/MoviesPage"));
@@ -11,21 +11,12 @@ const MovieCast = lazy(() => import("./components/MovieCast/MovieCast"));
 const MovieReviews = lazy(() =>
   import("./components/MovieReviews/MovieReviews")
 );
+import Navigation from "./components/Navigation/Navigation";
 
 function App() {
   return (
     <>
-      <header>
-        <nav className="nav">
-          <NavLink to="/" className="link">
-            Home
-          </NavLink>
-          <NavLink to="/movies" className="link">
-            Movies
-          </NavLink>
-        </nav>
-      </header>
-
+      <Navigation />
       <Suspense>
         <Routes>
           <Route path="/" element={<HomePage />} />

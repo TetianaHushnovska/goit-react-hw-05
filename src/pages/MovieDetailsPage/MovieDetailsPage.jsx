@@ -7,55 +7,49 @@ import {
   useLocation,
   useParams,
 } from "react-router-dom";
-import { fetchMovieById, fetchMovieImg } from "../../api/api";
+import { fetchMovieById } from "../../api/api";
 
 export default function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);
-  const [movieImg, setMovieImg] = useState(null);
-  const [posterUrl, setPosterUrl] = useState(null);
   const { movieId } = useParams();
   const location = useLocation();
+
   const goBackLink = useRef(location.state ?? "/movies");
 
   const BASE_IMG_URL =
     "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png";
+
+  const BASE_POSTER_URL = "https://image.tmdb.org/t/p/w300";
 
   useEffect(() => {
     if (!movieId) return;
 
     async function fetchMovieData() {
       try {
-        const [movieData, movieImgPath] = await Promise.all([
-          fetchMovieById(movieId),
-          fetchMovieImg(),
-        ]);
-        setMovie(movieData.data);
-        setMovieImg(movieImgPath.data.images);
+        const response = await fetchMovieById(movieId);
+        setMovie(response.data);
       } catch (error) {
-        console.log("error", error);
+        console.log("Error fetching movie data:", error);
       }
     }
+
     fetchMovieData();
   }, [movieId]);
-
-  useEffect(() => {
-    if (movie && movieImg) {
-      const posterSize = "w300";
-      const url = `${movieImg.secure_base_url}${posterSize}${movie.poster_path}`;
-
-      return setPosterUrl(url);
-    }
-  }, [movie, movieImg]);
 
   return (
     <div className="container">
       <Link to={goBackLink.current} className={css.goBack}>
         ⬅ Go Back
       </Link>
+
       <div className={css.block}>
         <div>
           <img
-            src={movie?.poster_path ? posterUrl : BASE_IMG_URL}
+            src={
+              movie?.poster_path
+                ? `${BASE_POSTER_URL}${movie.poster_path}`
+                : BASE_IMG_URL
+            }
             alt={movie?.title || "Movie poster"}
             width={300}
           />
@@ -63,15 +57,21 @@ export default function MovieDetailsPage() {
 
         <div>
           <h2>{movie?.title}</h2>
-          <p>User score: {Math.round(movie?.vote_average * 10)}%</p>
+          <p>
+            User score:{" "}
+            {movie?.vote_average
+              ? `${Math.round(movie.vote_average * 10)}%`
+              : "N/A"}
+          </p>
+
           <h4>Overview</h4>
           <p>{movie?.overview}</p>
+
           <h4>Genres</h4>
           <ul className={css.list}>
-            {movie &&
-              movie?.genres?.map((item) => {
-                return <li key={item.id}>{item.name}</li>;
-              })}
+            {movie?.genres?.map((item) => (
+              <li key={item.id}>{item.name}</li>
+            ))}
           </ul>
         </div>
       </div>
@@ -91,6 +91,7 @@ export default function MovieDetailsPage() {
           </li>
         </ul>
       </div>
+
       <Suspense fallback={<div>Loading subpage...</div>}>
         <Outlet />
       </Suspense>
